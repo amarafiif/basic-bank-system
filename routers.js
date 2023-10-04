@@ -1,6 +1,5 @@
 const express = require('express')
 const router = express.Router()
-const userRegister = require('./controllers/userController')
 const userController = require('./controllers/userController')
 
 router.get('/', (req, res) => {
@@ -9,6 +8,8 @@ router.get('/', (req, res) => {
     })
 })
 
-// routers.post('users', userController.registerUser)
+router.post('/users', userController.registerUser)
+router.get('/users', userController.getUsers)
+router.get('/users/:id', userController.getUserDetails)
 
 module.exports = router
