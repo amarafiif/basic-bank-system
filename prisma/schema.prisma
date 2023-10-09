@@ -33,14 +33,14 @@ model bank_accounts {
   bank_name                String
   bank_account_number      String
   balance                  BigInt
-  user_id                  Int                         @unique
+  user_id                  Int
   user                     users                       @relation(fields: [user_id], references: [id])
   source_transactions      bank_account_transactions[] @relation(name: "source_account")
   destination_transactions bank_account_transactions[] @relation(name: "destination_account")
 }
 
 model bank_account_transactions {
-  id                     Int           @id @default(autoincrement())
+  id                     Int            @id @default(autoincrement())
   source_account_id      Int
   destination_account_id Int
   amount                 BigInt
