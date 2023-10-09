@@ -8,7 +8,7 @@ module.exports = {
     // Method untuk menambahkan user baru beserta dengan profilnya
     registerUser: async (req, res) => {
 
-        // Hash Password
+        // Hashkan password
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(req.body.password, salt);
 
@@ -36,12 +36,12 @@ module.exports = {
         })
     },
 
-    // Menampilkan daftar users
+    // Menampilkan daftar users dan juga profilenya 
     getUsers: async (req, res) => {
         try {
             const users = await prisma.users.findMany({
                 include: {
-                    profile: true
+                    profile: true,
                 }
             });
 
@@ -55,32 +55,78 @@ module.exports = {
         }
     },
 
-    // Method untuk menampilkan detail informasi user dan profilnya berdasarkan ID
+    // Method untuk menampilkan detail informasi user, bank_account dan profilnya berdasarkan ID
     getUserDetails: async (req, res) => {
         try {
-            const userId = req.params.id;
+            const userId = parseInt(req.params.id);
+    
+            if (isNaN(userId)) {
+                return res.status(400).json({
+                    error: "Format ID pengguna tidak valid"
+                });
+            }
+    
             const user = await prisma.users.findUnique({
                 where: {
-                    id: parseInt(userId)
+                    id: userId
                 },
                 include: {
-                    profile: true
+                    profile: true,
+                    bank_accounts: {
+                        include: {
+                            source_transactions: {
+                                select: {
+                                    id: true,
+                                    destination_account_id: true,
+                                    amount: true
+                                }
+                            },
+                            destination_transactions: {
+                                select: {
+                                    id: true,
+                                    source_account_id: true,
+                                    amount: true
+                                }
+                            }
+                        }
+                    }
                 }
             });
-
+    
             if (!user) {
                 return res.status(404).json({
                     error: "User tidak ditemukan :("
                 });
             }
-
+    
+            // Convert BigInt values to string for each bank account and its transactions
+            const modifiedUser = {
+                ...user,
+                bank_accounts: user.bank_accounts.map(account => ({
+                    ...account,
+                    balance: account.balance.toString(),
+                    source_transactions: account.source_transactions.map(trans => ({
+                        ...trans,
+                        amount: trans.amount.toString()
+                    })),
+                    destination_transactions: account.destination_transactions.map(trans => ({
+                        ...trans,
+                        amount: trans.amount.toString()
+                    }))
+                }))
+            };
+    
             return res.json({
-                data: user
+                data: modifiedUser
             });
+            
         } catch (error) {
+            console.error(error); 
             return res.status(500).json({
-                error: "Error saat mengambil detail user :("
+                error: "Error saat mengambil detail user :(",
+                detailedError: error.message 
             });
         }
     }
+    
 }
