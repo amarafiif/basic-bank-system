@@ -24,7 +24,7 @@ module.exports = {
                 }),
             ]);
 
-            // Convert BigInt to string for serialization
+            // Convert BigInt to string untuk serialization
             result[2].amount = result[2].amount.toString();
     
             res.status(201).json({ message: "Transaction successful", transaction: result[2] });
@@ -59,10 +59,10 @@ module.exports = {
 
     getTransactionDetails: async (req, res) => {
         try {
-            const transactionId = parseInt(req.params.transaction, 10);
+            const transactionId = parseInt(req.params.id);
     
             const transaction = await prisma.bank_account_transactions.findUnique({
-                where: { id: transactionId },
+                where: { id: transactionId }, // <-- This is the corrected line.
                 include: {
                     source_account: {
                         select: { user: { select: { name: true, email: true } } },
@@ -76,14 +76,15 @@ module.exports = {
             if (!transaction) {
                 return res.status(404).json({ error: 'Transaction not found' });
             }
-
-            // Convert BigInt to string for serialization
-            transaction.amount = transaction.amount.toString();
+    
+            // Convert BigInt to string for serialization (if needed)
+            if (transaction.amount && typeof transaction.amount === "bigint") {
+                transaction.amount = transaction.amount.toString();
+            }
     
             res.json(transaction);
         } catch (error) {
             res.status(400).json({ error: error.message });
         }
     }
-    
 }

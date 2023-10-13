@@ -1,8 +1,9 @@
 const express = require('express')
 const router = express.Router()
 const userController = require('./controllers/userController')
-const accountController = require('./controllers/accountController')
-const { createTransaction, listTransactions, getTransactionDetails } = require('./controllers/transactionsController')
+const bankAccountController = require('./controllers/bankAccountController')
+const bankTransactionsController = require('./controllers/bankTransactionsController')
+
 
 router.get('/', (req, res) => {
     return res.json({
@@ -16,13 +17,13 @@ router.get('/users', userController.getUsers)
 router.get('/users/:id', userController.getUserDetails)
 
 // Route bank_accounts
-router.post('/accounts', accountController.createAccount)
-router.get('/accounts', accountController.listAccounts)
-router.get('/accounts/:id', accountController.getAccountDetail)
+router.post('/accounts', bankAccountController.createAccount)
+router.get('/accounts', bankAccountController.listAccounts)
+router.get('/accounts/:id', bankAccountController.getAccountDetail)
 
 // Route transactions
-router.post('/transactions', createTransaction)
-router.get('/transactions', listTransactions)
-router.get('/transactions', getTransactionDetails)
+router.post('/transactions', bankTransactionsController.createTransaction)
+router.get('/transactions', bankTransactionsController.listTransactions)
+router.get('/transactions/:id', bankTransactionsController.getTransactionDetails)
 
 module.exports = router

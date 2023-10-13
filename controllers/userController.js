@@ -99,7 +99,7 @@ module.exports = {
                 });
             }
     
-            // Convert BigInt values to string for each bank account and its transactions
+            // Convert bigInt to string
             const modifiedUser = {
                 ...user,
                 bank_accounts: user.bank_accounts.map(account => ({
