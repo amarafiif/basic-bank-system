@@ -118,7 +118,6 @@ module.exports = {
                 });
             }
     
-            // Convert BigInt values to string
             const modifiedAccount = {
                 ...account,
                 balance: account.balance.toString(),
