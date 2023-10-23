@@ -1,0 +1,88 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+      "title": "BE JS 2 Documentation API",
+      "version": "1.0.11"
+    },
+    "externalDocs": {
+      "description": "Find out more about Swagger",
+      "url": "http://swagger.io"
+    },
+    "servers": [
+      {
+        "url": "https://petstore3.swagger.io/api/v3"
+      }
+    ],
+    "tags": [
+      {
+        "name": "user",
+        "description": "User API"
+      }
+    ],
+    "paths": {
+      "/api/v1/users": {
+        "post": {
+          "tags": [
+            "user"
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "password": {
+                      "type": "string"
+                    },
+                    "identity_number": {
+                      "type": "integer"
+                    },
+                    "identity_type": {
+                      "type": "string"
+                    },
+                    "address": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "email": {
+                            "type": "string"
+                          },
+                          "password": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }

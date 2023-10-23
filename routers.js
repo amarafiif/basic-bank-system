@@ -3,16 +3,17 @@ const router = express.Router()
 const userController = require('./controllers/userController')
 const bankAccountController = require('./controllers/bankAccountController')
 const bankTransactionsController = require('./controllers/bankTransactionsController')
+const authController = require('./controllers/authController')
+const checkToken = require('./middleware/checkToken')
 
 
-router.get('/', (req, res) => {
+router.get('/', () => {
     return res.json({
         message: "Hello World!"
     })
 })
 
-// Route users
-router.post('/users', userController.registerUser)
+// Route users 
 router.get('/users', userController.getUsers)
 router.get('/users/:id', userController.getUserDetails)
 
@@ -25,5 +26,11 @@ router.get('/accounts/:id', bankAccountController.getAccountDetail)
 router.post('/transactions', bankTransactionsController.createTransaction)
 router.get('/transactions', bankTransactionsController.listTransactions)
 router.get('/transactions/:id', bankTransactionsController.getTransactionDetails)
+
+// Route authentication
+router.post('/auth/register', userController.registerUser)
+router.post('/auth/login', authController.loginUser)
+router.get('/auth/authenticate', checkToken, authController.getProfile)
+
 
 module.exports = router

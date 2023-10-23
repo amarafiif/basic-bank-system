@@ -1,13 +1,14 @@
 {
   "name": "basic-bank-account",
   "version": "1.0.0",
-  "description": "",
+  "description": "This is a Project Challenge from Binar Academy 💜",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "start": "node index.js"
   },
-  "author": "",
+  "author": "Muhammad Ammar Afif",
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^5.4.1",
@@ -16,6 +17,7 @@
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.2",
     "nodemon": "^3.0.1",
-    "prisma": "^5.3.1"
+    "prisma": "^5.3.1",
+    "swagger-ui-express": "^5.0.0"
   }
 }
